@@ -29,6 +29,7 @@
         <module>okhttp3-demo</module>
         <module>redisLock</module>
         <module>version</module>
+        <module>AMF3Test</module>
     </modules>
 
     <dependencyManagement>

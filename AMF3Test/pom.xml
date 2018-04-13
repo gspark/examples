@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.shrill</groupId>
+        <artifactId>examples</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>AMF3Test</artifactId>
+    <packaging>jar</packaging>
+
+    <name>AMF3Test</name>
+    <description>AMF3 Test</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.flex.blazeds</groupId>
+            <artifactId>flex-messaging-common</artifactId>
+            <version>4.7.3</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/flex-messaging-common-4.7.3.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.flex.blazeds</groupId>
+            <artifactId>flex-messaging-core</artifactId>
+            <version>4.7.3</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/flex-messaging-core-4.7.3.jar</systemPath>
+        </dependency>
+
+    </dependencies>
+
+</project>
