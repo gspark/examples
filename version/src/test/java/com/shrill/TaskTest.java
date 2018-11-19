@@ -228,4 +228,12 @@ public class TaskTest {
 
     }
 
+
+    @Test
+    public void hashCodeTest() {
+//        String value = "j_merchant_sms_reg_forgetpassword_18980084454";
+        String value = "j_merchant_sms_reg_forgetpassword_13080084455";
+        int ret = value.hashCode();
+        System.out.println(ret);
+    }
 }
