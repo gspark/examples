@@ -111,7 +111,7 @@
         <!--            &lt;!&ndash; MainClass in mainfest make a executable jar &ndash;&gt;-->
         <!--            <archive>-->
         <!--                <manifest>-->
-        <!--                    <mainClass>cn.com.yusys.geek.GeekA06</mainClass>-->
+        <!--                    <mainClass>cn.com.yusys.geek.FileMapTest</mainClass>-->
         <!--                </manifest>-->
         <!--            </archive>-->
 
