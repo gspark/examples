@@ -1,4 +1,4 @@
-package com.shrill.id;
+package com.shrill.util.id;
 
 /**
  * Created by zg on 2017-5-16.

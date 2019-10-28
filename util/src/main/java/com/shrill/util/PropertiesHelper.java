@@ -1,9 +1,6 @@
 package com.shrill.util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
@@ -19,7 +16,7 @@ public class PropertiesHelper {
     public static void loadProperty(String filename) {
         prop = new Properties();
         try {
-            InputStream inputStream = PropertiesHelper.class.getClassLoader().getResourceAsStream(filename);
+            InputStream inputStream = ClassLoader.getSystemResourceAsStream(filename);
             if (inputStream == null) {
                 System.out.println("Sorry, unable to find " + filename);
                 return;
@@ -95,5 +92,22 @@ public class PropertiesHelper {
             String value = PropertiesHelper.getProperty(key);
             System.out.println(key+":"+value);
         }
+    }
+
+    public static String getJarPath() {
+        java.net.URL url = PropertiesHelper.class.getProtectionDomain().getCodeSource()
+            .getLocation();
+        String filePath = null;
+        try {
+            filePath = java.net.URLDecoder.decode(url.getPath(), "utf-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (filePath.endsWith(".jar")) {
+            filePath = filePath.substring(0, filePath.lastIndexOf(File.pathSeparator) + 1);
+        }
+        java.io.File file = new java.io.File(filePath);
+        filePath = file.getAbsolutePath();
+        return filePath;
     }
 }

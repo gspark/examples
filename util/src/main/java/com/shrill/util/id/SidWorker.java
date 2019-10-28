@@ -1,4 +1,4 @@
-package com.shrill.id;
+package com.shrill.util.id;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

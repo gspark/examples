@@ -37,7 +37,8 @@ public class Reflect {
         Field field;
         try {
             field = targetClass.getDeclaredField(variableName);
-            field.setAccessible(true);//访问私有必须调用
+            //访问私有必须调用
+            field.setAccessible(true);
             return field.get(instance);
         } catch (Exception e) {
             log.info(e.getMessage(),e);
@@ -51,7 +52,8 @@ public class Reflect {
         try {
             field = targetClass.getDeclaredField(variableName);
 
-            field.setAccessible(true);//访问私有必须调用
+            //访问私有必须调用
+            field.setAccessible(true);
             field.set(instance, value);
 
             field.setAccessible(false);
@@ -74,7 +76,8 @@ public class Reflect {
         Class c[] = getParameterTypes(paras);
         try {
             Method method = instance.getClass().getDeclaredMethod(MethodName, c);
-            method.invoke(instance, paras);//调用o对象的方法
+            //调用o对象的方法
+            method.invoke(instance, paras);
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | InvocationTargetException e) {
             log.info(e.getMessage(), e);
         }
@@ -98,7 +101,8 @@ public class Reflect {
                 setAccessed = true;
                 method.setAccessible(true);
             }
-            ret = method.invoke(instance, paras);//调用o对象的方法
+            //调用o对象的方法
+            ret = method.invoke(instance, paras);
             if (setAccessed) {
                 method.setAccessible(false);
             }
@@ -111,7 +115,8 @@ public class Reflect {
 
     private static Class[] getParameterTypes(Object[] paras) {
         Class c[] = null;
-        if (paras != null) {//存在
+        if (paras != null) {
+            //存在
             int len = paras.length;
             c = new Class[len];
             for (int i = 0; i < len; ++i) {
