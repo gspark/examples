@@ -5,8 +5,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import redis.clients.jedis.JedisPool;
 
 public class TaskServer {
@@ -22,8 +25,11 @@ public class TaskServer {
   private final ObjectMapper om;
 
   public TaskServer(JedisPool pool) {
-    ArrayBlockingQueue workQueue = new ArrayBlockingQueue(20);
-    this.ex = new ThreadPoolExecutor(4, 10, 20, TimeUnit.SECONDS, workQueue);
+    ArrayBlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(20);
+
+    ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("demo-pool-%d").build();
+
+    this.ex = new ThreadPoolExecutor(4, 10, 20, TimeUnit.SECONDS, workQueue, namedThreadFactory);
 
     this.pool = pool;
 
