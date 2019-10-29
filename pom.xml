@@ -26,6 +26,7 @@
         <module>version</module>
         <module>AMF3Test</module>
         <module>util</module>
+        <module>hellosgw</module>
     </modules>
 
     <dependencyManagement>
