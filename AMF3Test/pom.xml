@@ -29,18 +29,31 @@
             <groupId>org.apache.flex.blazeds</groupId>
             <artifactId>flex-messaging-common</artifactId>
             <version>4.7.3</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/flex-messaging-common-4.7.3.jar</systemPath>
+            <!--<scope>system</scope>-->
+            <!--<systemPath>${project.basedir}/libs/flex-messaging-common-4.7.3.jar</systemPath>-->
         </dependency>
 
         <dependency>
             <groupId>org.apache.flex.blazeds</groupId>
             <artifactId>flex-messaging-core</artifactId>
             <version>4.7.3</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/flex-messaging-core-4.7.3.jar</systemPath>
+            <!--<scope>system</scope>-->
+            <!--<systemPath>${project.basedir}/libs/flex-messaging-core-4.7.3.jar</systemPath>-->
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

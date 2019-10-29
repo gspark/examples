@@ -44,9 +44,7 @@ public class TaskServer {
         if( null != r ) {
           ex.execute(r);
         }
-      } catch (InterruptedException | IOException e) {
-        e.printStackTrace();
-      } catch (ClassNotFoundException e) {
+      } catch (InterruptedException | IOException | ClassNotFoundException e) {
         e.printStackTrace();
       }
     }

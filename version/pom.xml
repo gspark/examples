@@ -103,6 +103,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <directory>${env.TEMP}\${project.name}</directory>
     </build>
 
 </project>

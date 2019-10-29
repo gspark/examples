@@ -8,6 +8,7 @@ import flex.messaging.io.amf.AmfMessageDeserializer;
 import flex.messaging.io.amf.AmfTrace;
 import flex.messaging.validators.ClassDeserializationValidator;
 import flex.messaging.validators.DeserializationValidator;
+
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,11 +22,11 @@ import flex.messaging.io.amf.Amf3Input;
 public class AMF3Test {
     public static void main(String[] args) {
 
-        ClassAliasRegistry.getRegistry().registerAlias("DSK","flex.messaging.messages.AcknowledgeMessageExt");
-//		ClassAliasRegistry.getRegistry().registerAlias("com.greencloud.dto.UserDto","com.greencloud.dto.UserDto");
+        ClassAliasRegistry.getRegistry().registerAlias("DSK", "flex.messaging.messages.AcknowledgeMessageExt");
+//      ClassAliasRegistry.getRegistry().registerAlias("com.greencloud.dto.UserDto","com.greencloud.dto.UserDto");
 
         // 序列化
-//		SerializationContext sercontext = new SerializationContext();
+//      SerializationContext sercontext = new SerializationContext();
         SerializationContext sercontext = SerializationContext.getSerializationContext();
         ClassDeserializationValidator validator = new ClassDeserializationValidator();
         validator.addAllowClassPattern("com.greencloud.dto.UserDto");
@@ -42,32 +43,31 @@ public class AMF3Test {
             long time1 = System.currentTimeMillis();
             int times = 10;
             //测试性能
-            for(int i=0;i<times;i++)
-            {
+            for (int i = 0; i < times; i++) {
                 FileInputStream fos = new FileInputStream("loginAppById.amf");
                 DataInputStream dos = new DataInputStream(fos);
 
                 AmfTrace trace = new AmfTrace();
                 MessageDeserializer deserializer = new AmfMessageDeserializer();
-                deserializer.initialize(sercontext,dos,trace);
+                deserializer.initialize(sercontext, dos, trace);
                 ActionContext context = new ActionContext();
 
                 ActionMessage message = new ActionMessage();
                 deserializer.readMessage(message, context);
 
                 amfinput.setInputStream(dos);
-                HashMap<?, ?> map = (HashMap<?, ?>) amfinput.readObject();
+                HashMap<?, ?> map = (HashMap<?, ?>)amfinput.readObject();
 
                 Iterator<?> iter = map.entrySet().iterator();
                 while (iter.hasNext()) {
                     @SuppressWarnings("rawtypes")
-                    Map.Entry entry = (Map.Entry) iter.next();
+                    Map.Entry entry = (Map.Entry)iter.next();
                     Object key = entry.getKey();
                     Object val = entry.getValue();
-                    System.out.println("key="+key+",value="+val);
+                    System.out.println("key=" + key + ",value=" + val);
                 }
             }
-            System.out.println("\ncost time="+(System.currentTimeMillis() - time1));
+            System.out.println("\ncost time=" + (System.currentTimeMillis() - time1));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

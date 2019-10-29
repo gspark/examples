@@ -1,4 +1,4 @@
-package cn.com.yusys.geek;
+package com.shrill;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -396,7 +396,7 @@ public class FileMapTest {
     private static void doFile(String[] args)  {
         try {
             long fileLine = getFileLine(args[0]);
-            cn.com.yusys.geek.FileMapTest fileMapTest = new cn.com.yusys.geek.FileMapTest();
+            FileMapTest fileMapTest = new FileMapTest();
             if (fileLine <= limit) {
                 fileMapTest.put(args[0], args[1]);
                 fileMapTest.outSimpleFile(args[1]);
