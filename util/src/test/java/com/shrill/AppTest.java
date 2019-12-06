@@ -7,6 +7,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.MapSerializer;
+import com.shrill.netty.TelnetClient;
 import com.shrill.util.PropertiesHelper;
 import org.junit.Test;
 

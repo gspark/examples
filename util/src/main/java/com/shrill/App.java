@@ -2,6 +2,7 @@ package com.shrill;
 
 import com.shrill.dao.EvalResDao;
 import com.shrill.dao.impl.EvalResDaoImpl;
+import com.shrill.netty.TelnetClient;
 import com.shrill.pojo.EvalRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,11 @@ public class App
 
     public static void main( String[] args )
     {
+//        testDao();
+        testSSHClient();
+    }
+
+    private static void testDao() {
         EvalResDao evalResDao = new EvalResDaoImpl();
 
         List<EvalRes> resList = evalResDao.findAll();
@@ -25,5 +31,10 @@ public class App
         for (EvalRes res : resList) {
             log.info(res.getData_dt());
         }
+    }
+
+    public static void testSSHClient() {
+        TelnetClient tc = new TelnetClient("192.168.251.175",22,true);
+        tc.connect();
     }
 }

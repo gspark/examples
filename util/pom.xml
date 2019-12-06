@@ -57,7 +57,7 @@
   </dependencies>
 
   <build>
-    <finalName>util</finalName>
+    <directory>${env.TEMP}\${project.name}</directory>
   </build>
 
 </project>

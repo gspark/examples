@@ -1,0 +1,18 @@
+syntax = "proto3";
+option java_package = "com.yang.gateway.limiter";
+option java_outer_classname = "PermitsEntity";
+
+message Permits {
+
+    // 最大token数量
+    int64 maxPermits = 1;
+
+    // 当前token数量
+    int64 currentPermits = 2;
+
+    // 每秒添加token数量
+    int64 rate = 3;
+
+    // 上一次更新时间
+    int64 lastMilliSecond = 4;
+}

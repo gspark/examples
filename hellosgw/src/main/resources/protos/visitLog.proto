@@ -1,0 +1,9 @@
+syntax = "proto3";
+option java_package = "com.yang.gateway.model";
+option java_outer_classname = "VisitLogEntity";
+
+message VisitLog {
+
+    string remoteAddress = 1;
+    string method = 2;
+}
