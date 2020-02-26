@@ -11,6 +11,7 @@
   </parent>
 
   <artifactId>okhttp3-demo</artifactId>
+  <name>okhttp3-demo</name>
 
   <repositories>
     <repository>
