@@ -9,6 +9,8 @@ import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.MapSerializer;
 import com.shrill.netty.TelnetClient;
 import com.shrill.util.PropertiesHelper;
+import com.sun.org.apache.bcel.internal.generic.FSTORE;
+import com.sun.xml.internal.ws.addressing.WsaTubeHelper;
 import org.junit.Test;
 
 import java.io.*;
@@ -112,5 +114,13 @@ public class AppTest {
         HashMap object2 = kryo.readObject(input, HashMap.class);
 
         assertEquals(hmap, object2);
+    }
+
+    @Test
+    public void testVersion() {
+        String version = "1.0.0.9-202033333";
+        String ver = version.substring(0,version.indexOf("-"));
+        System.out.println(ver);
+        assertEquals("1.0.0.9", ver);
     }
 }
