@@ -49,7 +49,7 @@ public class ExecutorHelper {
      *
      * @param command
      */
-    protected void executeAsync(DelayThread command) {
+    public void executeAsync(DelayThread command) {
         this.ex.execute(command);
     }
 
