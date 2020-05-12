@@ -1,5 +1,8 @@
 package com.shrill;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Random;
 
 public class RandomTest {
@@ -9,7 +12,13 @@ public class RandomTest {
     public static void main(String[] args) {
         // mathRandom();
         // sameSeed();
-        defaultSeed();
+        // defaultSeed();
+
+
+        // invokeHashCode();
+        // invokeHashCode1();
+        // invokeSameSeed();
+        invokeSameSeed1();
     }
 
     private static void random() {
@@ -89,5 +98,66 @@ public class RandomTest {
         int num = (int) (Math.random() * 3);
         // 注意不要写成(int)Math.random()*3，这个结果为0，因为先执行了强制转换
         System.out.println("num=" + num);
+    }
+
+    public static void invokeHashCode() {
+        Object rcvr = "a";
+        try {
+            Class<?>[] argTypes = new Class[]{};
+            Object[] args = null;
+
+            Method method = rcvr.getClass().getMethod("hashCode", argTypes);
+            Object ret = method.invoke(rcvr, args);
+            System.out.println(ret);
+
+        } catch (IllegalArgumentException | NoSuchMethodException | SecurityException
+            | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void invokeHashCode1() {
+        Class<?> clz = String.class;
+        try {
+            Class<?>[] argTypes = new Class[]{};
+            Object[] args = null;
+
+            Constructor<?> c = clz.getConstructor(String.class);
+            Object rcvr = c.newInstance("b");
+
+            Method method = rcvr.getClass().getMethod("hashCode", argTypes);
+            Object ret = method.invoke(rcvr, args);
+            System.out.println(ret);
+
+        } catch (IllegalArgumentException | NoSuchMethodException | SecurityException
+            | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void invokeSameSeed() {
+        Class<?> clz = RandomTest.class;
+        try {
+            Constructor<?> c = clz.getConstructor();
+            Object rcvr = c.newInstance();
+
+            Method method = rcvr.getClass().getDeclaredMethod("sameSeed");
+            method.setAccessible(true);
+            method.invoke(rcvr);
+        } catch (IllegalArgumentException | NoSuchMethodException | SecurityException
+            | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void invokeSameSeed1() {
+        try {
+            Method method = RandomTest.class.getDeclaredMethod("sameSeed");
+            method.setAccessible(true);
+            method.invoke(null);
+        } catch (IllegalArgumentException | NoSuchMethodException | SecurityException
+            | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 }
