@@ -11,6 +11,8 @@ import com.shrill.netty.TelnetClient;
 import com.shrill.util.PropertiesHelper;
 import com.sun.org.apache.bcel.internal.generic.FSTORE;
 import com.sun.xml.internal.ws.addressing.WsaTubeHelper;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import org.junit.Test;
 
 import java.io.*;

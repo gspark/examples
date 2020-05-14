@@ -110,6 +110,8 @@ public class RandomTest {
             Object ret = method.invoke(rcvr, args);
             System.out.println(ret);
 
+            System.out.println("a".hashCode());
+
         } catch (IllegalArgumentException | NoSuchMethodException | SecurityException
             | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
@@ -153,7 +155,7 @@ public class RandomTest {
     public static void invokeSameSeed1() {
         try {
             Method method = RandomTest.class.getDeclaredMethod("sameSeed");
-            method.setAccessible(true);
+            // method.setAccessible(true);
             method.invoke(null);
         } catch (IllegalArgumentException | NoSuchMethodException | SecurityException
             | IllegalAccessException | InvocationTargetException e) {

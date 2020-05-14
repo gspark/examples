@@ -4,6 +4,8 @@ import com.shrill.dao.EvalResDao;
 import com.shrill.dao.impl.EvalResDaoImpl;
 import com.shrill.netty.TelnetClient;
 import com.shrill.pojo.EvalRes;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +22,8 @@ public class App
     public static void main( String[] args )
     {
 //        testDao();
-        testSSHClient();
+//         testSSHClient();
+        invokeSameSeed1();
     }
 
     private static void testDao() {
@@ -36,5 +39,16 @@ public class App
     public static void testSSHClient() {
         TelnetClient tc = new TelnetClient("192.168.251.175",22,true);
         tc.connect();
+    }
+
+    public static void invokeSameSeed1() {
+        try {
+            Method method = RandomTest.class.getDeclaredMethod("sameSeed");
+            method.setAccessible(true);
+            method.invoke(null);
+        } catch (IllegalArgumentException | NoSuchMethodException | SecurityException
+            | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 }
