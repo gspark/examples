@@ -1,4 +1,4 @@
-package com.shrill.util.idworker;
+package com.shrill.util.id;
 
 
 /**

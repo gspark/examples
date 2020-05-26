@@ -1,4 +1,4 @@
-package com.shrill;
+package com.shrill.example;
 
 public class LoopTest {
 

@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,15 +30,15 @@ public class IdTest {
 
   @Test
   public void testApp() {
-    IdWorker worker2 = new IdWorker(2);
-
+    IdWorker worker2 = new IdWorker();
+    worker2.setWorkerId(2);
     System.out.println(worker2.nextId());
   }
 
   @Test
   public void mulitId() {
-    IdWorker worker2 = new IdWorker(3);
-
+    IdWorker worker2 = new IdWorker();
+    worker2.setWorkerId(3);
     int count = 100000;
 
     ExecutorService pool = Executors.newFixedThreadPool(count);
@@ -46,16 +47,14 @@ public class IdTest {
 
     Set<Long> ls = new HashSet<>(count);
     for (int i = 0; i < count; ++i) {
-      futures.add(pool.submit(() -> worker2.nextId()));
+      futures.add(pool.submit(worker2::nextId));
     }
     for (Future<Long> future : futures) {
       try {
         Long result = future.get();
         System.out.println(future.toString() + " id: " + result);
         ls.add(result);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      } catch (ExecutionException e) {
+      } catch (InterruptedException | ExecutionException e) {
         e.printStackTrace();
       }
 
@@ -74,18 +73,19 @@ public class IdTest {
 
   @Test
   public void OrderId() {
-    OrderIdWorker worker1 = new OrderIdWorker(99);
+    OrderIdWorker worker1 = new OrderIdWorker();
+    worker1.setWorkerId(99);
     long id = worker1.nextId();
     System.out.println("id:" + id);
-    Assert.assertTrue(99 == (id & 0b11111111111111111) >> 9L);
+    Assert.assertEquals(99, (id & 0b11111111111111111) >> 9L);
     long time = id >> 17L;
     System.out.println("ti:" + time);
   }
 
   @Test
   public void MultiOrderId() {
-    OrderIdWorker worker1 = new OrderIdWorker(99);
-
+    OrderIdWorker worker1 = new OrderIdWorker();
+    worker1.setWorkerId(99);
     int count = 30000;
 
     ExecutorService pool = Executors.newFixedThreadPool(count);
@@ -94,16 +94,14 @@ public class IdTest {
 
     Set<Long> ls = new HashSet<>(count);
     for (int i = 0; i < count; ++i) {
-      futures.add(pool.submit(() -> worker1.nextId()));
+      futures.add(pool.submit((Callable<Long>) worker1::nextId));
     }
     for (Future<Long> future : futures) {
       try {
         Long result = future.get();
         System.out.println(" id: " + result);
         ls.add(result);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      } catch (ExecutionException e) {
+      } catch (InterruptedException | ExecutionException e) {
         e.printStackTrace();
       }
 

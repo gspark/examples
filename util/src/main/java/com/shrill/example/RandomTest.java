@@ -1,4 +1,4 @@
-package com.shrill;
+package com.shrill.example;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
