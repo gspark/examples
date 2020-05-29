@@ -8,6 +8,6 @@ public class CodeReview2 {
         System.out.println(s);
 
         String s1 = String.valueOf(i);
-        System.out.println(s);
+        System.out.println(s1);
     }
 }
