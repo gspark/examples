@@ -1,22 +1,22 @@
 package com.shrill;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.esotericsoftware.kryo.serializers.MapSerializer;
-import com.shrill.netty.TelnetClient;
 import com.shrill.util.PropertiesHelper;
-import com.sun.org.apache.bcel.internal.generic.FSTORE;
-import com.sun.xml.internal.ws.addressing.WsaTubeHelper;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.junit.Test;
-
-import java.io.*;
-import java.util.*;
 
 /**
  * Unit test for simple App.
@@ -124,5 +124,12 @@ public class AppTest {
         String ver = version.substring(0,version.indexOf("-"));
         System.out.println(ver);
         assertEquals("1.0.0.9", ver);
+    }
+
+    @Test
+    public void testSplit() {
+        String s = ",123,,,456,";
+        String[] sp = s.split(",");
+        assertEquals(sp.length,5);
     }
 }
