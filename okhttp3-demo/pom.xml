@@ -112,11 +112,23 @@
       <groupId>com.google.android</groupId>
       <artifactId>android</artifactId>
       <version>${android.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>json</artifactId>
+          <groupId>org.json</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>logging-interceptor</artifactId>
       <version>3.4.1</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>okio</artifactId>
+          <groupId>com.squareup.okio</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
   </dependencies>
