@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class StreamExp {
@@ -54,11 +56,11 @@ public class StreamExp {
 
     private static final int GOOD = 90;
 
+    // 13
     List<Student> students = Arrays.asList(
         new Student("tom", 80, Student.Type.MALE),
-        new Student("jerry", 70, Student.Type.FEMALE),
+        new Student("jerry", 71, Student.Type.FEMALE),
         new Student("小李", 90, Student.Type.FEMALE),
-        new Student("小张", 93, Student.Type.MALE),
         new Student("小明", 35, Student.Type.MALE),
         new Student("大熊", 82, Student.Type.MALE),
         new Student("小雨", 55, Student.Type.FEMALE),
@@ -67,15 +69,17 @@ public class StreamExp {
         new Student("duck", 50, Student.Type.MALE),
         new Student("mikey", 61, Student.Type.MALE),
         new Student("sam", 70, Student.Type.FEMALE),
+        new Student("小张", 93, Student.Type.MALE),
         new Student("蓝胖", 99, Student.Type.MALE));
 
+    // 9
     List<Dish> menu = Arrays.asList(
+        new Dish("season fruit", true, 120, Dish.Type.OTHER),
         new Dish("pork", false, 800, Dish.Type.MEAT),
         new Dish("beef", false, 700, Dish.Type.MEAT),
         new Dish("chicken", false, 400, Dish.Type.MEAT),
         new Dish("french fries", true, 530, Dish.Type.OTHER),
         new Dish("rice", true, 350, Dish.Type.OTHER),
-        new Dish("season fruit", true, 120, Dish.Type.OTHER),
         new Dish("pizza", true, 550, Dish.Type.OTHER),
         new Dish("prawns", false, 300, Dish.Type.FISH),
         new Dish("salmon", false, 450, Dish.Type.FISH));
@@ -83,16 +87,46 @@ public class StreamExp {
     public static void main(String[] args) {
         StreamExp streamExp = new StreamExp();
 
-        // System.out.println("Java 7");
+        // System.out.println("Java 7:");
         // streamExp.studentNames();
-        // System.out.println("Java 8");
+        // System.out.println("Java 8:");
         // streamExp.studentNamesJ8();
 
-        // System.out.println("more");
+        // System.out.println("limit:");
+        // streamExp.studentNamesLimit();
+
+        // System.out.println("more:");
         // streamExp.more();
 
-        System.out.println("studentNamesPrint");
-        streamExp.studentNamesPrint();
+        // System.out.println("studentNamesPrint:");
+        // streamExp.studentNamesPrint();
+
+        // System.out.println("studentNamesPrintSort:");
+        // streamExp.studentNamesPrintSort();
+
+        // System.out.println("menuPrint:");
+        // streamExp.menuPrint();
+
+        // System.out.println("distinct:");
+        // streamExp.distinct();
+
+        // System.out.println("skip:");
+        // streamExp.skip();
+
+        // System.out.println("stringLength:");
+        // streamExp.stringLength();
+
+        // System.out.println("flatMapOfStream:");
+        // streamExp.flatMapOfStream();
+
+        // System.out.println("numberPair:");
+        // streamExp.numberPair();
+
+        // System.out.println("numberPairEx:");
+        // streamExp.numberPairEx();
+
+        System.out.println("reduceEx:");
+        streamExp.reduceEx();
     }
 
     public void studentNames() {
@@ -127,7 +161,7 @@ public class StreamExp {
     public void studentNamesLimit() {
         List<String> goodStudentNames = students.stream()
             .filter(s -> s.getScore() >= GOOD)
-            .sorted(comparing(Student::getScore))
+            .sorted(comparing(Student::getScore).reversed())
             .map(Student::getName)
             .limit(3)
             .collect(toList());
@@ -139,27 +173,8 @@ public class StreamExp {
         List<String> title = Arrays.asList("Java8", "Stream", "Example");
         Stream<String> s = title.stream();
         s.forEach(System.out::println);
+        s = title.stream();
         s.forEach(System.out::println);
-    }
-
-    public void studentNamesPrint1() {
-        List<String> goodStudentNames = students.stream()
-            .filter(s -> {
-                System.out.println("filter-> " + s.getName());
-                return s.getScore() >= GOOD;
-            })
-            .sorted(comparing(s -> {
-                System.out.println("sorted-> " + s.getName());
-                return s.getScore();
-            }))
-            .map(s -> {
-                System.out.println("map-> " + s.getName());
-                return s.getName();
-            })
-            .limit(3)
-            .collect(toList());
-
-        System.out.println(goodStudentNames);
     }
 
     public void studentNamesPrint() {
@@ -178,6 +193,26 @@ public class StreamExp {
         System.out.println(goodStudentNames);
     }
 
+    public void studentNamesPrintSort() {
+        List<String> goodStudentNames = students.stream()
+            .filter(s -> {
+                System.out.println("filter-> " + s.getName());
+                return s.getScore() >= GOOD;
+            })
+            .sorted(Comparator.comparing((Student s) -> {
+                System.out.println("sorted-> " + s.getName());
+                return s.getScore();
+            }).reversed())
+            .map(s -> {
+                System.out.println("map-> " + s.getName());
+                return s.getName();
+            })
+            .limit(3)
+            .collect(toList());
+
+        System.out.println(goodStudentNames);
+    }
+
     public void menuPrint() {
         List<String> names =
             menu.stream()
@@ -185,6 +220,10 @@ public class StreamExp {
                     System.out.println("filtering " + d.getName());
                     return d.getCalories() > 300;
                 })
+                // .sorted(comparing(d -> {
+                //     System.out.println("sorted-> " + d.getName());
+                //     return d.getCalories();
+                // }))
                 .map(d -> {
                     System.out.println("mapping " + d.getName());
                     return d.getName();
@@ -192,5 +231,105 @@ public class StreamExp {
                 .limit(3)
                 .collect(toList());
         System.out.println(names);
+    }
+
+    public void distinct() {
+        List<Integer> numbers = Arrays.asList(1, 2, 1, 3, 3, 2, 4, 6);
+        numbers.stream()
+            .filter(i -> i % 2 == 0)
+            .distinct()
+            .forEach(System.out::println);
+    }
+
+    public void skip() {
+        List<String> goodStudentNames = students.stream()
+            .filter(s -> {
+                System.out.println("filter-> " + s.getName());
+                return s.getScore() > GOOD;
+            })
+            .skip(1)
+            .map(s -> {
+                System.out.println("map-> " + s.getName());
+                return s.getName();
+            })
+            .limit(3)
+            .collect(toList());
+
+        System.out.println(goodStudentNames);
+    }
+
+    public void stringLength() {
+        List<String> words = Arrays.asList("Java 8", "Lambdas", "In", "Action");
+        List<Integer> wordLengths = words.stream()
+            .map(String::length)
+            .collect(toList());
+        System.out.println(wordLengths);
+    }
+
+    public void flatMapOfStream() {
+        List<String> words = Arrays.asList("Hello", "World");
+
+        // List<Stream<String>> characters =
+        //     words.stream()
+        //         .map(w -> w.split(""))
+        //         .map(Arrays::stream)
+        //         .distinct()
+        //         .collect(Collectors.toList());
+        // System.out.println(characters);
+
+        List<String> uniqueCharacters =
+            words.stream()
+                .map(w -> w.split(""))
+                .flatMap(Arrays::stream)
+                .distinct()
+                .collect(Collectors.toList());
+        System.out.println(uniqueCharacters);
+    }
+
+    public void numberPair() {
+        List<Integer> numbers1 = Arrays.asList(1, 2, 3);
+        List<Integer> numbers2 = Arrays.asList(3, 4);
+
+        List<int[]> pairs = numbers1.stream()
+            .flatMap(
+                i -> numbers2.stream().map(j -> new int[]{i, j})
+            )
+            .collect(toList());
+
+        System.out.print("[");
+        pairs.forEach(p -> {
+            System.out.print(String.format("(%d,%d)",p[0],p[1]));
+        });
+        System.out.print("]");
+    }
+
+    public void numberPairEx() {
+        List<Integer> numbers1 = Arrays.asList(1, 2, 3);
+        List<Integer> numbers2 = Arrays.asList(3, 4);
+
+        List<int[]> pairs = numbers1.stream()
+            .flatMap(
+                i -> numbers2.stream()
+                    .filter(j -> (i + j) % 3 == 0)
+                    .map(j -> new int[]{i, j})
+            )
+            .collect(toList());
+
+        System.out.print("[");
+        pairs.forEach(p -> {
+            System.out.print(String.format("(%d,%d)",p[0],p[1]));
+        });
+        System.out.print("]");
+    }
+
+    public void reduceEx() {
+        List<Integer> numbers = Arrays.asList(4, 5, 3, 9);
+        int sum = numbers.stream().reduce(0, (a, b) -> a + b);
+        System.out.println("sum: " + sum);
+
+        Optional<Integer> min = numbers.stream().reduce((x, y) -> x > y ? y : x);
+        Optional<Integer> max = numbers.stream().reduce(Integer::max);
+
+        System.out.println("min: " + min.orElse(0) + " max: " + max.orElse(0));
     }
 }
