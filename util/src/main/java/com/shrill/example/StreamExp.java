@@ -1,6 +1,7 @@
 package com.shrill.example;
 
 import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.maxBy;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
@@ -125,8 +126,13 @@ public class StreamExp {
         // System.out.println("numberPairEx:");
         // streamExp.numberPairEx();
 
-        System.out.println("reduceEx:");
-        streamExp.reduceEx();
+        // System.out.println("reduceEx:");
+        // streamExp.reduceEx();
+
+        // System.out.println("createStream:");
+        // streamExp.createStream();
+
+        streamExp.collectEx();
     }
 
     public void studentNames() {
@@ -269,13 +275,20 @@ public class StreamExp {
     public void flatMapOfStream() {
         List<String> words = Arrays.asList("Hello", "World");
 
-        // List<Stream<String>> characters =
-        //     words.stream()
-        //         .map(w -> w.split(""))
-        //         .map(Arrays::stream)
-        //         .distinct()
-        //         .collect(Collectors.toList());
-        // System.out.println(characters);
+        List<String[]> characters = words.stream()
+            .map(word -> word.split(""))
+            .distinct()
+            .collect(toList());
+        System.out.println(characters);
+
+        List<Stream<String>> characters1 =
+            words.stream()
+                .map(w -> w.split(""))
+        // 每个数组变成了单独的流
+                .map(Arrays::stream)
+                .distinct()
+                .collect(Collectors.toList());
+        System.out.println(characters1);
 
         List<String> uniqueCharacters =
             words.stream()
@@ -332,4 +345,32 @@ public class StreamExp {
 
         System.out.println("min: " + min.orElse(0) + " max: " + max.orElse(0));
     }
+
+    public void createStream() {
+        Stream<String> stream = Stream.of("Java 8 ", "Lambdas ", "In ", "Action");
+        stream.map(String::toUpperCase).forEach(System.out::println);
+
+        int[] numbers = {2, 3, 5, 7, 10, 14};
+        int sum = Arrays.stream(numbers).sum();
+        System.out.println("sum:" + sum);
+
+        Stream.iterate(0, n -> n + 2)
+            .limit(10)
+            .forEach(System.out::println);
+
+        Stream.generate(Math::random)
+            .limit(5)
+            .forEach(System.out::println);
+    }
+
+    public void collectEx() {
+        Comparator<Dish> dishCaloriesComparator =
+            Comparator.comparingInt(Dish::getCalories);
+
+        Optional<Dish> mostCalorieDish =
+            menu.stream()
+                .collect(maxBy(dishCaloriesComparator));
+        mostCalorieDish.ifPresent(dish -> System.out.println(dish.name));
+    }
+
 }
