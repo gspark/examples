@@ -28,6 +28,10 @@ public class Student {
 
     @Override
     public String toString() {
-        return name;
+        return "Student{" +
+            "name='" + name + '\'' +
+            ", score=" + score +
+            ", type=" + type +
+            '}';
     }
 }

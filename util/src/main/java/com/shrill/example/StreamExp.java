@@ -7,8 +7,12 @@ import static java.util.stream.Collectors.toList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -64,7 +68,7 @@ public class StreamExp {
         new Student("小李", 90, Student.Type.FEMALE),
         new Student("小明", 35, Student.Type.MALE),
         new Student("大熊", 82, Student.Type.MALE),
-        new Student("小雨", 55, Student.Type.FEMALE),
+        new Student("小雨", 90, Student.Type.FEMALE),
         new Student("二狗", 98, Student.Type.MALE),
         new Student("三胖", 59, Student.Type.MALE),
         new Student("duck", 50, Student.Type.MALE),
@@ -132,7 +136,12 @@ public class StreamExp {
         // System.out.println("createStream:");
         // streamExp.createStream();
 
-        streamExp.collectEx();
+        // streamExp.collectEx();
+
+        // streamExp.groupGet();
+        // streamExp.groupGet1();
+        // streamExp.groupGet3();
+        streamExp.groupGet5();
     }
 
     public void studentNames() {
@@ -143,6 +152,7 @@ public class StreamExp {
             }
         }
         goodStudents.sort(new Comparator<Student>() {
+            @Override
             public int compare(Student d1, Student d2) {
                 return Integer.compare(d1.getScore(), d2.getScore());
             }
@@ -284,7 +294,7 @@ public class StreamExp {
         List<Stream<String>> characters1 =
             words.stream()
                 .map(w -> w.split(""))
-        // 每个数组变成了单独的流
+                // 每个数组变成了单独的流
                 .map(Arrays::stream)
                 .distinct()
                 .collect(Collectors.toList());
@@ -311,7 +321,7 @@ public class StreamExp {
 
         System.out.print("[");
         pairs.forEach(p -> {
-            System.out.print(String.format("(%d,%d)",p[0],p[1]));
+            System.out.print(String.format("(%d,%d)", p[0], p[1]));
         });
         System.out.print("]");
     }
@@ -330,7 +340,7 @@ public class StreamExp {
 
         System.out.print("[");
         pairs.forEach(p -> {
-            System.out.print(String.format("(%d,%d)",p[0],p[1]));
+            System.out.print(String.format("(%d,%d)", p[0], p[1]));
         });
         System.out.print("]");
     }
@@ -373,4 +383,112 @@ public class StreamExp {
         mostCalorieDish.ifPresent(dish -> System.out.println(dish.name));
     }
 
+    /**
+     * 分组取值
+     */
+    public void groupGet() {
+        Map<Student.Type, Student> m = students.stream().collect(
+            Collectors.groupingBy(
+                Student::getType,
+                Collectors.collectingAndThen(
+                    Collectors.maxBy(
+                        Comparator.comparingInt(Student::getScore)), Optional::get
+                )
+            ));
+
+        for (Map.Entry<Student.Type, Student> s : m.entrySet()) {
+            System.out.println(s.getKey() + " " + s.getValue().toString());
+        }
+    }
+
+    /**
+     * 分组取最大值
+     */
+    public void groupGet1() {
+        Map<Student.Type, Student> m = students.stream().collect(
+            Collectors.toMap(Student::getType, Function.identity(),
+                BinaryOperator.maxBy(Comparator.comparingInt(Student::getScore))));
+
+        for (Map.Entry<Student.Type, Student> s : m.entrySet()) {
+            System.out.println(s.getKey() + " " + s.getValue().toString());
+        }
+    }
+
+    /**
+     * 分组
+     */
+    public void groupGet3() {
+        Map<Student.Type, Student> m = students.stream().collect(
+            Collectors.groupingBy(Student::getType,
+                Collectors.collectingAndThen(Collectors.reducing((s1, s2) -> s1.getScore() > s2.getScore() ? s1 : s2),
+                    Optional::get)));
+
+        for (Map.Entry<Student.Type, Student> s : m.entrySet()) {
+            System.out.println(s.getKey() + " " + s.getValue().toString());
+        }
+    }
+
+    /**
+     * 分组5
+     */
+    public void groupGet5() {
+        Map<Student.Type, List<Student>> m = students.stream().collect(
+            Collectors.groupingBy(Student::getType
+            ));
+
+        for (Map.Entry<Student.Type, List<Student>> s : m.entrySet()) {
+            System.out.println(s.getKey() + " " + s.getValue().toString());
+        }
+    }
+
+    /**
+     * 分组取值
+     */
+    public void groupGet2() {
+        Map<Student.Type, Student> m = new HashMap<>();
+
+        for (Student s : students) {
+            Student tmp = m.get(s.getType());
+            if (null == tmp) {
+                m.put(s.getType(), s);
+            } else {
+                if (s.getScore() > tmp.getScore()) {
+                    m.put(s.getType(), s);
+                }
+            }
+        }
+        for (Map.Entry<Student.Type, Student> s : m.entrySet()) {
+            System.out.println(s.getKey() + " " + s.getValue().toString());
+        }
+    }
+
+    public void groupGet4() {
+        List<Student> ret = new ArrayList<>();
+        for (Student s : students) {
+            if (ret.isEmpty()) {
+                ret.add(0, s);
+            } else {
+                boolean add = false;
+                boolean sameType = false;
+                for (int j = ret.size() - 1; j >= 0; j--) {
+                    Student ss = ret.get(j);
+                    if (ss.getType() == s.getType()) {
+                        if (s.getScore() > ss.getScore()) {
+                            add = true;
+                            ret.remove(j);
+                        } else if (s.getScore() == ss.getScore()) {
+                            add = true;
+                        }
+                        sameType = true;
+                    }
+                }
+                if (add || !sameType) {
+                    ret.add(s);
+                }
+            }
+        }
+        for (Student s : ret) {
+            System.out.println(s.toString());
+        }
+    }
 }
