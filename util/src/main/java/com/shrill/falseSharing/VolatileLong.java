@@ -1,6 +1,7 @@
 package com.shrill.falseSharing;
 
-import sun.misc.Contended;
+import jdk.internal.vm.annotation.Contended;
+// import sun.misc.Contended;
 
 @Contended
 public class VolatileLong {

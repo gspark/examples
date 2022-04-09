@@ -14,13 +14,11 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <name>util</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -38,25 +36,38 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>28.1-jre</version>
+      <version>31.1-jre</version>
     </dependency>
 
     <dependency>
       <groupId>com.esotericsoftware</groupId>
       <artifactId>kryo</artifactId>
-      <version>5.0.0-RC4</version>
+      <version>5.3.0</version>
     </dependency>
 
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-all</artifactId>
-      <version>4.1.45.Final</version>
+      <version>4.1.75.Final</version>
     </dependency>
-
   </dependencies>
 
   <build>
-    <directory>${env.TEMP}\${project.name}</directory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <compilerArgs>
+            <arg>--add-exports</arg>
+            <arg>java.base/jdk.internal.vm.annotation=ALL-UNNAMED</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+    </plugins>
+    <directory>${env.TEMP}\${project.artifactId}</directory>
   </build>
+
 
 </project>
