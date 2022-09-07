@@ -23,11 +23,9 @@
     <modules>
         <module>okhttp3-demo</module>
         <module>redisLock</module>
-        <module>version</module>
         <module>AMF3Test</module>
         <module>util</module>
         <module>hellosgw</module>
-        <module>springdoc</module>
     </modules>
 
     <dependencyManagement>

@@ -132,4 +132,11 @@ public class AppTest {
         String[] sp = s.split(",");
         assertEquals(sp.length,5);
     }
+
+    @Test
+    public void testSplit1() {
+        String s = "ddddd3wc";
+        String[] sp = s.split("::");
+        assertEquals(sp[0],"ddddd3wc");
+    }
 }
